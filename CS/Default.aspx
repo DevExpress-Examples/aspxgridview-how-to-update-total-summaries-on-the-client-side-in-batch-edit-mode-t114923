@@ -11,14 +11,10 @@
         function OnBatchEditEndEditing(s, e) {
             CalculateSummary(s, e.rowValues, e.visibleIndex, false);
         }
-        var savedValue = null;
+        var savedValue;
         function OnEndCallback(s, e) {
-            if (savedValue == null) return;
+            if (!savedValue) return;
             labelSum.SetValue(savedValue);
-        }
-        function OnBeginCallback(s, e) {
-            if (e.command == ASPxClientGridViewCallbackCommand.UpdateEdit || e.command == ASPxClientGridViewCallbackCommand.Refresh) return;
-            savedValue = labelSum.GetValue();
         }
 
         function CalculateSummary(grid, rowValues, visibleIndex, isDeleting) {
@@ -64,7 +60,7 @@
             <TotalSummary>
                 <dx:ASPxSummaryItem SummaryType="Sum" FieldName="C2" Tag="C2_Sum" />
             </TotalSummary>
-            <ClientSideEvents BeginCallback="OnBeginCallback" EndCallback="OnEndCallback" BatchEditChangesCanceling="OnChangesCanceling" BatchEditRowDeleting="OnBatchEditRowDeleting" BatchEditEndEditing="OnBatchEditEndEditing" />
+            <ClientSideEvents EndCallback="OnEndCallback" BatchEditChangesCanceling="OnChangesCanceling" BatchEditRowDeleting="OnBatchEditRowDeleting" BatchEditEndEditing="OnBatchEditEndEditing" />
         </dx:ASPxGridView>
     </form>
 </body>

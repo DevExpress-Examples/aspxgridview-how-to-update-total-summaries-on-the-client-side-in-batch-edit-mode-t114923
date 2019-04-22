@@ -11,19 +11,11 @@
         function OnBatchEditEndEditing(s, e) {
             CalculateSummary(s, e.rowValues, e.visibleIndex, false);
         }
-        var savedValue;
-        function OnEndCallback(s, e) {
-            if (!savedValue) return;
-            labelSum.SetValue(savedValue);
-        }
-
         function CalculateSummary(grid, rowValues, visibleIndex, isDeleting) {
             var originalValue = grid.batchEditApi.GetCellValue(visibleIndex, "C2");
             var newValue = rowValues[(grid.GetColumnByField("C2").index)].value;
             var dif = isDeleting ? -newValue : newValue - originalValue;
-            var sum = (parseFloat(labelSum.GetValue()) + dif).toFixed(1);
-            savedValue = sum;
-            labelSum.SetValue(sum);
+            labelSum.SetValue((parseFloat(labelSum.GetValue()) + dif).toFixed(1));
         }
         function OnBatchEditRowDeleting(s, e) {
             CalculateSummary(s, e.rowValues, e.visibleIndex, true);
@@ -47,7 +39,7 @@
                 <dx:GridViewDataSpinEditColumn Width="100" FieldName="C2">
                     <FooterTemplate>
                         Sum =
-					<dx:ASPxLabel ID="ASPxLabel1" runat="server" ClientInstanceName="labelSum" Text='<%#GetTotalSummaryValue()%>'>
+                    <dx:ASPxLabel ID="ASPxLabel1" runat="server" ClientInstanceName="labelSum" Text='<%#GetTotalSummaryValue()%>'>
                     </dx:ASPxLabel>
                     </FooterTemplate>
                 </dx:GridViewDataSpinEditColumn>
@@ -60,7 +52,7 @@
             <TotalSummary>
                 <dx:ASPxSummaryItem SummaryType="Sum" FieldName="C2" Tag="C2_Sum" />
             </TotalSummary>
-            <ClientSideEvents EndCallback="OnEndCallback" BatchEditChangesCanceling="OnChangesCanceling" BatchEditRowDeleting="OnBatchEditRowDeleting" BatchEditEndEditing="OnBatchEditEndEditing" />
+            <ClientSideEvents BatchEditChangesCanceling="OnChangesCanceling" BatchEditRowDeleting="OnBatchEditRowDeleting" BatchEditEndEditing="OnBatchEditEndEditing" />
         </dx:ASPxGridView>
     </form>
 </body>

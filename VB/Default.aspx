@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="true" CodeFile="Default.aspx.vb" Inherits="_Default" %>
 
-<%@ Register Assembly="DevExpress.Web.v16.2, Version=16.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+<%@ Register Assembly="DevExpress.Web.v18.2, Version=18.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
     Namespace="DevExpress.Web" TagPrefix="dx" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -11,11 +11,19 @@
         function OnBatchEditEndEditing(s, e) {
             CalculateSummary(s, e.rowValues, e.visibleIndex, false);
         }
+        var savedValue;
+        function OnEndCallback(s, e) {
+            if (!savedValue) return;
+            labelSum.SetValue(savedValue);
+        }
+
         function CalculateSummary(grid, rowValues, visibleIndex, isDeleting) {
             var originalValue = grid.batchEditApi.GetCellValue(visibleIndex, "C2");
             var newValue = rowValues[(grid.GetColumnByField("C2").index)].value;
             var dif = isDeleting ? -newValue : newValue - originalValue;
-            labelSum.SetValue((parseFloat(labelSum.GetValue()) + dif).toFixed(1));
+            var sum = (parseFloat(labelSum.GetValue()) + dif).toFixed(1);
+            savedValue = sum;
+            labelSum.SetValue(sum);
         }
         function OnBatchEditRowDeleting(s, e) {
             CalculateSummary(s, e.rowValues, e.visibleIndex, true);
@@ -39,7 +47,7 @@
                 <dx:GridViewDataSpinEditColumn Width="100" FieldName="C2">
                     <FooterTemplate>
                         Sum =
-                    <dx:ASPxLabel ID="ASPxLabel1" runat="server" ClientInstanceName="labelSum" Text='<%#GetTotalSummaryValue()%>'>
+					<dx:ASPxLabel ID="ASPxLabel1" runat="server" ClientInstanceName="labelSum" Text='<%#GetTotalSummaryValue()%>'>
                     </dx:ASPxLabel>
                     </FooterTemplate>
                 </dx:GridViewDataSpinEditColumn>
@@ -52,7 +60,7 @@
             <TotalSummary>
                 <dx:ASPxSummaryItem SummaryType="Sum" FieldName="C2" Tag="C2_Sum" />
             </TotalSummary>
-            <ClientSideEvents BatchEditChangesCanceling="OnChangesCanceling" BatchEditRowDeleting="OnBatchEditRowDeleting" BatchEditEndEditing="OnBatchEditEndEditing" />
+            <ClientSideEvents EndCallback="OnEndCallback" BatchEditChangesCanceling="OnChangesCanceling" BatchEditRowDeleting="OnBatchEditRowDeleting" BatchEditEndEditing="OnBatchEditEndEditing" />
         </dx:ASPxGridView>
     </form>
 </body>

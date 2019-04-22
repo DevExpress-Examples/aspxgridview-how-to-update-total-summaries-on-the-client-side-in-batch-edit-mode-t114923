@@ -31,7 +31,8 @@
         function OnChangesCanceling(s, e) {
             if (s.batchEditApi.HasChanges())
                 setTimeout(function () {
-                    s.Refresh();
+                    savedValue = null;
+                    s.Refresh();                    
                 }, 0);
         }
     </script>

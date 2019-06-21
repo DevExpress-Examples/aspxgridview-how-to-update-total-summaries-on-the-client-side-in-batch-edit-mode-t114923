@@ -5,6 +5,9 @@
 * [Default.aspx.cs](./CS/Default.aspx.cs) (VB: [Default.aspx.vb](./VB/Default.aspx.vb))
 <!-- default file list end -->
 # ASPxGridView - How to update total summaries on the client side in Batch Edit mode
+<!-- run online -->
+**[[Run Online]](https://codecentral.devexpress.com/t114923/)**
+<!-- run online end -->
 
 <p>Starting with v18.2 we support callbacks and keep the changes safe while a user navigates via pages, filters and sorts the grid data. If you use this version and above, please copy the 18.2.3+ branch as approaches to update total summaries differ in new versions and old ones.</p>
 <p>This example demonstrates how to update total summaries on the client side when ASPxGridView is in Batch Edit mode. </p>
